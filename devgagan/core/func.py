@@ -1,16 +1,3 @@
-# ---------------------------------------------------
-# File Name: func.py
-# Description: A Pyrogram bot for downloading files from Telegram channels or groups 
-#              and uploading them back to Telegram.
-# Author: Gagan
-# GitHub: https://github.com/devgaganin/
-# Telegram: https://t.me/team_spy_pro
-# YouTube: https://youtube.com/@dev_gagan
-# Created: 2025-01-11
-# Last Modified: 2025-01-11
-# Version: 2.0.5
-# License: MIT License
-# ---------------------------------------------------
 
 import math
 import time , re
@@ -39,14 +26,14 @@ async def subscribe(app, message):
       try:
          user = await app.get_chat_member(update_channel, message.from_user.id)
          if user.status == "kicked":
-            await message.reply_text("You are Banned. Contact -- @devgaganin")
+            await message.reply_text("You are Banned. Contact -- @pragyan")
             return 1
       except UserNotParticipant:
         caption = f"Join our channel to use the bot"
-        await message.reply_photo(photo="https://graph.org/file/d44f024a08ded19452152.jpg",caption=caption, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Join Now...", url=f"{url}")]]))
+        await message.reply_photo(photo="https://graph.org/file/1f1c857d57b885d65dfb5-1648fc3faf55dbd1d2.jpg",caption=caption, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Join Now...", url=f"{url}")]]))
         return 1
       except Exception:
-         await message.reply_text("Something Went Wrong. Contact us @devgaganin...")
+         await message.reply_text("Something Went Wrong. Contact us @pragyan...")
          return 1
 async def get_seconds(time_string):
     def extract_value_and_unit(ts):
