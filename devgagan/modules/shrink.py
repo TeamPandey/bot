@@ -65,32 +65,34 @@ async def is_user_verified(user_id):
  
 @app.on_message(filters.command("start"))
 async def token_handler(client, message):
-    """Handle the /token command."""
+    """Handle the /start command."""
     join = await subscribe(client, message)
     if join == 1:
         return
-    chat_id = "save_restricted_content_bots"
-    msg = await app.get_messages(chat_id, 796)
+    
     user_id = message.chat.id
-    if len(message.command) <= 1:
-        image_url = "https://i.postimg.cc/v8q8kGyz/startimg-1.jpg"
-        join_button = InlineKeyboardButton("Join Channel", url="https://t.me/team_spy_pro")
-        premium = InlineKeyboardButton("Get Premium", url="https://t.me/kingofpatal")   
-        keyboard = InlineKeyboardMarkup([
-            [join_button],   
-            [premium]    
-        ])
-         
-        await message.reply_photo(
-            msg.photo.file_id,
-            caption=(
-                "Hi 👋 Welcome, Wanna intro...?\n\n"
-                "✳️ I can save posts from channels or groups where forwarding is off. I can download videos/audio from YT, INSTA, ... social platforms\n"
-                "✳️ Simply send the post link of a public channel. For private channels, do /login. Send /help to know more."
-            ),
-            reply_markup=keyboard
-        )
-        return  
+    
+    # Image URL to be sent with the message
+    image_url = "https://graph.org/file/1f1c857d57b885d65dfb5-1648fc3faf55dbd1d2.jpg"
+    
+    join_button = InlineKeyboardButton("Join Channel", url="https://t.me/vrindavanneeko16008")
+    premium = InlineKeyboardButton("Get Premium", url="https://t.me/pragyan")   
+    
+    keyboard = InlineKeyboardMarkup([
+        [join_button],   
+        [premium]    
+    ])
+    
+    await message.reply_photo(
+        image_url,  # Using the provided image URL instead of fetching from a channel
+        caption=(
+            "Hi 👋 Welcome, Wanna intro...?\n\n"
+            "✳️ I can save posts from channels or groups where forwarding is off. I can download videos/audio from YT, INSTA, ... social platforms\n"
+            "✳️ Simply send the post link of a public channel. For private channels, do /login. Send /help to know more."
+        ),
+        reply_markup=keyboard
+    )
+    return
  
     param = message.command[1] if len(message.command) > 1 else None
     freecheck = await chk_user(message, user_id)
