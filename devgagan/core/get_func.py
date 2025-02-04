@@ -362,24 +362,42 @@ async def download_user_stories(userbot, chat_id, msg_id, edit, sender):
         if not story.media:
             await edit.edit("The story doesn't contain any media.")
             return
+        
         await edit.edit("Downloading Story...")
         file_path = await userbot.download_media(story)
         print(f"Story downloaded: {file_path}")
+        
         # Send the downloaded story based on its type
-        if story.media:
-            await edit.edit("Uploading Story...")
-            if story.media == MessageMediaType.VIDEO:
-                await app.send_video(sender, file_path)
-            elif story.media == MessageMediaType.DOCUMENT:
-                await app.send_document(sender, file_path)
-            elif story.media == MessageMediaType.PHOTO:
-                await app.send_photo(sender, file_path)
+        await edit.edit("Uploading Story...")
+        if story.media == MessageMediaType.VIDEO:
+            await userbot.send_video(sender, file_path)
+        elif story.media == MessageMediaType.DOCUMENT:
+            await userbot.send_document(sender, file_path)
+        elif story.media == MessageMediaType.PHOTO:
+            await userbot.send_photo(sender, file_path)
+        
         if file_path and os.path.exists(file_path):
             os.remove(file_path)  
+        
         await edit.edit("Story processed successfully.")
     except RPCError as e:
         print(f"Failed to fetch story: {e}")
         await edit.edit(f"Error: {e}")
+
+@app.on_message(filters.command("get_story"))
+async def get_story_handler(client, message):
+    if not message.reply_to_message:
+        await message.reply_text("Please reply to a message containing the story ID.")
+        return
+    
+    chat_id = message.reply_to_message.chat.id  # User's chat ID
+    msg_id = message.reply_to_message.id  # Message ID of the story
+    sender = message.chat.id  # The user who requested the story
+    
+    edit = await message.reply_text("Fetching story...")  # Status message
+    
+    await download_user_stories(client, chat_id, msg_id, edit, sender)
+
         
 async def copy_message_with_chat_id(app, userbot, sender, chat_id, message_id, edit):
     target_chat_id = user_chat_ids.get(sender, sender)
