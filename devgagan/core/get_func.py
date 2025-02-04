@@ -364,15 +364,16 @@ async def download_user_stories(userbot, chat_id, msg_id, edit, sender):
         story = await userbot.get_stories(chat_id, msg_id)
         if not story:
             await edit.edit("No story available for this user.")
-            return  
+            return
+
         if not story.media:
             await edit.edit("The story doesn't contain any media.")
             return
-        
+
         await edit.edit("Downloading Story...")
         file_path = await userbot.download_media(story)
         print(f"Story downloaded: {file_path}")
-        
+
         # Send the downloaded story based on its type
         await edit.edit("Uploading Story...")
         if story.media == MessageMediaType.VIDEO:
@@ -381,14 +382,21 @@ async def download_user_stories(userbot, chat_id, msg_id, edit, sender):
             await userbot.send_document(sender, file_path)
         elif story.media == MessageMediaType.PHOTO:
             await userbot.send_photo(sender, file_path)
-        
+
+        # Clean up downloaded file
         if file_path and os.path.exists(file_path):
-            os.remove(file_path)  
-        
+            os.remove(file_path)
+
         await edit.edit("Story processed successfully.")
-    except RPCError as e:
-        print(f"Failed to fetch story: {e}")
+    except Exception as e:
+        print(f"Error fetching or processing story: {e}")
         await edit.edit(f"Error: {e}")
+
+def thumbnail(sender):
+    # Check if the file exists and return the corresponding file name
+    if os.path.exists(f'{sender}.jpg'):
+        return f'{sender}.jpg'
+    return None  # Return None if the file doesn't exist
 
 @app.on_message(filters.command("get_story"))
 async def get_story_handler(client, message):
