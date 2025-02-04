@@ -21,6 +21,12 @@ from config import MONGO_DB as MONGODB_CONNECTION_STRING, LOG_GROUP, OWNER_ID, S
 from devgagan.core.mongo.db import set_session, remove_session, get_data
 from telethon import TelegramClient, events, Button
 from devgagantools import fast_upload
+from pyrogram import Client, filters  # Import filters
+
+async def download_user_stories(userbot, chat_id, msg_id, edit, sender):
+    try:
+        # Fetch the story using the provided chat ID and message ID
+        story = await userbot.get_st
 
 def thumbnail(sender):
     return f'{sender}.jpg' if os.path.exists(f'{sender}.jpg') else None
